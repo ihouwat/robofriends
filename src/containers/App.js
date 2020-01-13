@@ -3,6 +3,7 @@ import CardList from '../components/CardList.js';
 import SearchBox from '../components/SearchBox.js';
 // import { robots } from './robots.js'; //Using destructuring because robots.js doesn't have export 'default'
 import Scroll from '../components/Scroll';
+import ErrorBoundary from '../components/ErrorBoundary';
 import './App.css';
 
 class App extends Component {
@@ -36,7 +37,9 @@ class App extends Component {
         <h1 className='f1'>RoboFriends</h1>
         <SearchBox searchChange={this.onSearchChange}/>
         <Scroll>
-          <CardList robots={filteredRobots}/>
+          <ErrorBoundary>
+            <CardList robots={filteredRobots}/>
+          </ErrorBoundary>
         </Scroll>
       </div>
   }
