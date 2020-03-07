@@ -7,40 +7,35 @@ import Scroll from '../components/Scroll';
 import ErrorBoundary from '../components/ErrorBoundary';
 import './App.css';
 
-import { setSearchField } from '../actions';
+import { setSearchField, requestRobots } from '../actions';
 
 const mapStateToProps = state => {
   return {
-    searchField: state.searchField
+    searchField: state.searchRobots.searchField,
+    robots: state.requestRobots.robots,
+    isPending: state.requestRobots.isPending,
+    error: state.requestRobots.error
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots())
   }
 }
 
 class App extends Component {
-  constructor() {
-    super() // Super calls the constructor of the component class. 
-    this.state = { // State is what describes our App. It can change and affect the app. State lives in the parent component.
-      robots: [],
-    }
-  }
 
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => response.json())
-      .then(users => {this.setState({ robots: users})});// takes the empty array from this.state into a list of users fetchec from the website above
+    this.props.onRequestRobots();
   }
 
   render() {
-    const { robots } = this.state;
-    const { searchField, onSearchChange } = this.props; // Coming from the Redux store (see index.js file)
+    const { searchField, onSearchChange, robots, isPending } = this.props; // Coming from the Redux store (see index.js file)
     const filteredRobots = robots.filter(robot => {
       return robot.name.toLowerCase().includes(searchField.toLowerCase()) //If anything in the string includes anything in the string, you return an array with available robots
     })
-    return !robots.length ?  //robots.length === 0 evaluates to 'false'. So, we are saying, if NOT false, return the nested code 
+    return isPending ?  //robots.length === 0 evaluates to 'false'. So, we are saying, if NOT false, return the nested code 
       //This is a loading bar component
       <h1>Loading</h1> : 
       <div className='tc'>
