@@ -5,6 +5,7 @@ import SearchBox from '../components/SearchBox.js';
 // import { robots } from './robots.js'; //Using destructuring because robots.js doesn't have export 'default'
 import Scroll from '../components/Scroll';
 import ErrorBoundary from '../components/ErrorBoundary';
+import Header from '../components/Header';
 import './App.css';
 
 import { setSearchField, requestRobots } from '../actions';
@@ -39,7 +40,7 @@ class App extends Component {
       //This is a loading bar component
       <h1>Loading</h1> : 
       <div className='tc'>
-        <h1 className='f1'>RoboFriends</h1>
+      <Header />
         <SearchBox searchChange={onSearchChange}/>
         <Scroll>
           <ErrorBoundary>
